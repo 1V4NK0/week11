@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiApp2.MainPage"
+             xmlns:model="clr-namespace:MauiApp2"
+             xmlns:viewmodel="clr-namespace:MauiApp2"
+             x:DataType="viewmodel:AnimalViewModel"
+             Title="{Binding Title}">
+
+    <ScrollView>
+        <VerticalStackLayout
+            Padding="0,0">
+                <CollectionView ItemsSource="{Binding Animals}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="model:Animal">
+                        <HorizontalStackLayout Padding="10">
+                            <HorizontalStackLayout.GestureRecognizers>
+                                <TapGestureRecognizer
+Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:AnimalViewModel}}, Path=GoToDetailsCommand}"
+CommandParameter="{Binding .}"/>
+                            </HorizontalStackLayout.GestureRecognizers>
+                            <Image
+                                Aspect="AspectFill"
+                                HeightRequest="100"
+                                Source="{Binding Image}"
+                                WidthRequest="100" />       
+                            <Label VerticalOptions="Center" TextColor="Gray">
+                                <Label.Text>
+                                    <MultiBinding StringFormat="{}{0} | {1}">
+                                        <Binding Path="Name" />
+                                        <Binding Path="Location" />
+                                    </MultiBinding>
+                                </Label.Text>
+                            </Label>
+                        </HorizontalStackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            <Button WidthRequest="150" Text="Get Animals" Command="{Binding GetAnimalsCommand}" IsEnabled="{Binding IsNotBusy}"/>
+            <ActivityIndicator IsVisible="{Binding IsBusy}"
+                IsRunning="{Binding IsBusy}"
+                HorizontalOptions="Fill"
+                VerticalOptions="Center"
+                Color="{StaticResource Primary}"
+                />      
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>
